@@ -1,3 +1,4 @@
+
 // src/components/marketplace/CartDropdown.tsx
 
 import { useState } from "react";
@@ -53,6 +54,10 @@ export const CartDropdown = ({ onClose }: CartDropdownProps) => {
     purchaseContext === 'marketplace'
       ? 'PocketAngadi Cart'
       : `${storeName} Cart`;
+
+  // Dynamic cart and checkout links based on context
+  const cartLink = purchaseContext === 'marketplace' ? '/cart' : '/storecart';
+  const checkoutLink = purchaseContext === 'marketplace' ? '/checkout' : '/checkout';
 
   return (
     <div className="relative">
@@ -114,12 +119,12 @@ export const CartDropdown = ({ onClose }: CartDropdownProps) => {
                 <span className="font-bold">₹{totalPrice.toFixed(2)}</span>
               </div>
               <div className="flex space-x-2">
-                <Link to="/storecart" className="flex-1">
+                <Link to={cartLink} className="flex-1">
                   <Button variant="outline" className="w-full">
                     View Cart
                   </Button>
                 </Link>
-                <Link to="/iheckout" className="flex-1">
+                <Link to={checkoutLink} className="flex-1">
                   <Button className="w-full">Checkout</Button>
                 </Link>
               </div>
