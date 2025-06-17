@@ -21,13 +21,21 @@ import {
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { getProductById } = useProducts();
-  const product = getProductById(id!);
   const { addToCart } = useCart();
   const { purchaseContext, storeId, storeName } = usePurchaseContext();
   const { toast } = useToast();
 
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
+
+  // Get product first
+  const product = getProductById(id!);
+
+  // Always call useMemo hook - move it before the early return
+  const images = useMemo(
+    () => (product?.images && product.images.length ? product.images : [product?.image || ""]),
+    [product] 
+  );
 
   // Scroll to top when component mounts
   useEffect(() => {
@@ -52,12 +60,6 @@ const ProductDetail: React.FC = () => {
       </div>
     );
   }
-
-  // derive images array always
-  const images = useMemo(
-    () => (product.images && product.images.length ? product.images : [product.image]),
-    [product] 
-  );
 
   const handleAddToCart = () => {
     addToCart({
