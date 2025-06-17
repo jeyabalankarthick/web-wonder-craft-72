@@ -20,8 +20,7 @@ export const HeroSection = ({ onExploreProducts }: HeroSectionProps) => {
                 ✨ New Marketplace Experience
               </Badge>
               <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight">
-                Discover Amazing Products from 
-                <span className="text-primary"> Trusted Sellers</span>
+              They Dream. You Shop. Together, We Build India
               </h1>
               <p className="text-xl text-gray-600 dark:text-gray-300 max-w-lg">
                 Shop millions of products with fast delivery, competitive prices, and excellent customer service.

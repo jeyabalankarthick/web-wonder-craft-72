@@ -26,8 +26,14 @@ export const ProductsView: React.FC = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [productToDelete, setProductToDelete] = useState<string | null>(null);
 
-  // 1) Sort so active items come first
+  // Sort products by creation date (newest first) and then by active status
   const sortedProducts = [...products].sort((a, b) => {
+    // First sort by creation date (assuming products have a createdAt field)
+    const dateA = new Date(a.createdAt || 0).getTime();
+    const dateB = new Date(b.createdAt || 0).getTime();
+    if (dateA !== dateB) return dateB - dateA;
+
+    // Then sort by active status
     if (a.status === b.status) return 0;
     return a.status === "active" ? -1 : 1;
   });
