@@ -54,8 +54,8 @@ export const CartDropdown = ({ onClose }: CartDropdownProps) => {
     if (purchaseContext === 'marketplace') {
       return 'PocketAngadi Cart';
     } else {
-      // For store context, use "Fashion Cart" for fashion websites
-      return 'Fashion Cart';
+      // For store context, use the actual store name + Cart
+      return `${storeName} Cart`;
     }
   };
 

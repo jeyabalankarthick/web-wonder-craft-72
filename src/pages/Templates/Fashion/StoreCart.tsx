@@ -1,4 +1,3 @@
-
 // src/pages/Templates/Fashion/StoreCart.tsx
 
 import React from "react";
@@ -32,7 +31,7 @@ const StoreCart: React.FC = () => {
         <Header />
         <div className="flex-1 flex flex-col items-center justify-center bg-background">
           <ShoppingBag className="h-12 w-12 text-gray-400 mb-4" />
-          <h2 className="text-2xl font-bold">Fashion Cart is empty</h2>
+          <h2 className="text-2xl font-bold">{storeName} Cart is empty</h2>
           <p className="mt-2 text-gray-600">Add some products to get started.</p>
           <Button 
             className="mt-6"
@@ -51,7 +50,7 @@ const StoreCart: React.FC = () => {
       <Header />
 
       <div className="flex-1 max-w-7xl mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6">Fashion Cart</h1>
+        <h1 className="text-3xl font-bold mb-6">{storeName} Cart</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Cart Items */}

@@ -11,8 +11,8 @@ export const usePurchaseContext = () => {
       return 'store';
     }
     
-    // If we're on marketplace route, it's a marketplace purchase
-    if (location.pathname.startsWith('/marketplace')) {
+    // If we're on marketplace route without a current website, it's a marketplace purchase
+    if (location.pathname.startsWith('/marketplace') && !currentWebsite) {
       return 'marketplace';
     }
 
@@ -31,8 +31,13 @@ export const usePurchaseContext = () => {
       return 'marketplace';
     }
 
-    // Default fallback based on current website context
-    return currentWebsite ? 'store' : 'marketplace';
+    // For index page and other routes, if we have a current website, it's a store purchase
+    if (currentWebsite) {
+      return 'store';
+    }
+
+    // Default fallback to marketplace
+    return 'marketplace';
   };
 
   const getStoreId = (): string | undefined => {
