@@ -7,8 +7,8 @@ export const AboutSection = () => {
   const features = [
     {
       icon: Shield,
-      title: "Secure Shopping",
-      description: "100% secure payment processing with buyer protection guarantee"
+      title: "MSME Focus",
+      description: "Exclusively supporting small businesses, artisans, and local sellers"
     },
     {
       icon: Truck,
@@ -17,13 +17,13 @@ export const AboutSection = () => {
     },
     {
       icon: Users,
-      title: "Customer Support",
-      description: "24/7 customer service to help with all your needs"
+      title: "Community Support",
+      description: "Supporting families, communities, and local entrepreneurs"
     },
     {
       icon: Award,
       title: "Quality Assured",
-      description: "Verified sellers and authentic products only"
+      description: "Verified MSME vendors and authentic products only"
     }
   ];
 
@@ -31,12 +31,31 @@ export const AboutSection = () => {
     <div className="bg-gray-50 py-16">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-12">
-          <Badge variant="secondary" className="mb-4">About Pocket Angadi</Badge>
-          <h2 className="text-3xl font-bold mb-4">Your Trusted Online Marketplace</h2>
-          <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-            Pocket Angadi connects buyers and sellers across India, offering a secure platform 
-            for quality products at the best prices. Join millions of satisfied customers today.
-          </p>
+          <Badge variant="secondary" className="mb-4">About Us – PocketAngadi</Badge>
+          <h2 className="text-3xl font-bold mb-6">Empowering India's MSME Heroes</h2>
+          <div className="text-muted-foreground text-lg max-w-4xl mx-auto space-y-4">
+            <p>
+              At PocketAngadi, we believe that every product has a story — and behind each one is a dreamer, 
+              a doer, a local entrepreneur striving to make a difference.
+            </p>
+            <p>
+              We're more than just an e-commerce platform. We're a movement to empower India's MSME heroes — 
+              the small businesses, artisans, and local sellers who are the true backbone of our economy. 
+              Unlike mass-market giants, we focus exclusively on MSME vendors, giving them the visibility, 
+              voice, and value they deserve.
+            </p>
+            <p>
+              When you shop with us, you're not just buying a product — you're supporting a family, 
+              a community, a future.
+            </p>
+            <p className="font-semibold text-primary">
+              Together, we're building a marketplace where commerce feels human, where every cart contributes 
+              to someone's climb, and where you can shop with pride and purpose.
+            </p>
+            <p className="font-bold text-xl text-gray-900">
+              Let's grow together. Let's shop better. Let's uplift India — one order at a time.
+            </p>
+          </div>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -63,7 +82,7 @@ export const AboutSection = () => {
           </div>
           <div>
             <h3 className="text-3xl font-bold text-primary mb-2">50K+</h3>
-            <p className="text-muted-foreground">Verified Sellers</p>
+            <p className="text-muted-foreground">MSME Vendors</p>
           </div>
           <div>
             <h3 className="text-3xl font-bold text-primary mb-2">1M+</h3>

@@ -54,7 +54,7 @@ export const WebsiteProvider = ({ children }: { children: ReactNode }) => {
       content: {
         heroTitle: 'Welcome to Our Store',
         heroSubtitle: 'Discover amazing products',
-        logoText: 'FASHION',
+        logoText: websiteData.content?.logoText || 'FASHION',
         ...websiteData.content
       }
     };
@@ -95,15 +95,15 @@ export const WebsiteProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const setActiveWebsite = (id: string) => {
-    setWebsites(prev => 
-      prev.map(site => ({
-        ...site,
-        isActive: site.id === id
-      }))
-    );
-    const activeWebsite = websites.find(site => site.id === id);
-    if (activeWebsite) {
-      setCurrentWebsite(activeWebsite);
+    const websiteToActivate = websites.find(site => site.id === id);
+    if (websiteToActivate) {
+      setWebsites(prev => 
+        prev.map(site => ({
+          ...site,
+          isActive: site.id === id
+        }))
+      );
+      setCurrentWebsite(websiteToActivate);
     }
   };
 

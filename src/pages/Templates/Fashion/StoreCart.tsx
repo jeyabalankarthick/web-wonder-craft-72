@@ -1,4 +1,3 @@
-
 // src/pages/Templates/Fashion/StoreCart.tsx
 
 import React from "react";
@@ -19,7 +18,7 @@ const StoreCart: React.FC = () => {
     updateQuantity,
     removeFromCart,
     getStoreTotalPrice,
-    clearCart,
+    clearStoreCart,
   } = useCart();
 
   // only store items
@@ -154,7 +153,7 @@ const StoreCart: React.FC = () => {
 
                 <Button
                   className="w-full mb-2"
-                  onClick={() => navigate(`/live/${storeId}/checkout`)}
+                  onClick={() => navigate("/checkout")}
                 >
                   Proceed to Checkout
                 </Button>
@@ -162,7 +161,7 @@ const StoreCart: React.FC = () => {
                   variant="outline"
                   className="w-full"
                   onClick={() => {
-                    clearCart();
+                    clearStoreCart(storeId);
                     navigate(`/live/${storeId}`);
                   }}
                 >

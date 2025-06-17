@@ -16,8 +16,11 @@ export const WebsitesView = ({ setActiveView }: WebsitesViewProps) => {
   console.log('Websites in view:', websites);
 
   const handleViewWebsite = (website: any) => {
+    console.log('Viewing website:', website);
     setActiveWebsite(website.id);
-    window.open(`/live/${website.url}`, '_blank');
+    // Open the live website in a new tab
+    const liveUrl = `/live/${website.url}`;
+    window.open(liveUrl, '_blank');
   };
 
   const handleDeleteWebsite = (id: string) => {
@@ -95,7 +98,7 @@ export const WebsitesView = ({ setActiveView }: WebsitesViewProps) => {
                       className="bg-blue-600 hover:bg-blue-700"
                     >
                       <Eye className="w-4 h-4 mr-1" />
-                      View
+                      View Live
                     </Button>
                   </div>
                   
