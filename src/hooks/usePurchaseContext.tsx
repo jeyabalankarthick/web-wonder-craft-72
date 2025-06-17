@@ -18,7 +18,7 @@ export const usePurchaseContext = () => {
     }
 
     // If we're in cart or checkout and have a current website, it's a store purchase
-    if ((location.pathname === '/cart' || location.pathname === '/iheckout') && currentWebsite) {
+    if ((location.pathname === '/storecart' || location.pathname === '/checkout') && currentWebsite) {
       return 'store';
     }
 
