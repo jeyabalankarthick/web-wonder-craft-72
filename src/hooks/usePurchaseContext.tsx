@@ -11,8 +11,13 @@ export const usePurchaseContext = () => {
       return 'store';
     }
     
-    // If we're on marketplace route without a current website, it's a marketplace purchase
-    if (location.pathname.startsWith('/marketplace') && !currentWebsite) {
+    // If we're in template editor/preview mode, it's a store purchase
+    if (location.pathname.startsWith('/edit/') || location.pathname === '/') {
+      return 'store';
+    }
+
+    // If we're on marketplace route, it's a marketplace purchase
+    if (location.pathname.startsWith('/marketplace')) {
       return 'marketplace';
     }
 
@@ -21,34 +26,37 @@ export const usePurchaseContext = () => {
       return 'store';
     }
 
-    // For product detail pages, check if we have a current website context
+    // For product detail pages, check the route structure
     if (location.pathname.startsWith('/product/') || location.pathname.startsWith('/productDetails/')) {
-      // If we have a current website, it's a store purchase
-      if (currentWebsite) {
-        return 'store';
+      // If we're in marketplace context (no current website), it's marketplace
+      if (location.pathname.startsWith('/marketplace') || !currentWebsite) {
+        return 'marketplace';
       }
-      // Otherwise, it's a marketplace purchase
-      return 'marketplace';
-    }
-
-    // For index page and other routes, if we have a current website, it's a store purchase
-    if (currentWebsite) {
+      // Otherwise, it's a store purchase
       return 'store';
     }
 
-    // Default fallback to marketplace
-    return 'marketplace';
+    // Default fallback based on current website context
+    return currentWebsite ? 'store' : 'marketplace';
   };
 
   const getStoreId = (): string | undefined => {
-    if (getPurchaseContext() === 'store' && currentWebsite) {
+    if (getPurchaseContext() === 'store') {
+      // For template preview, use a default store ID
+      if (!currentWebsite) {
+        return 'template-preview';
+      }
       return currentWebsite.url;
     }
     return undefined;
   };
 
   const getStoreName = (): string => {
-    if (getPurchaseContext() === 'store' && currentWebsite) {
+    if (getPurchaseContext() === 'store') {
+      // For template preview, use default name
+      if (!currentWebsite) {
+        return 'Minimal Shop';
+      }
       return currentWebsite.name;
     }
     return 'PocketAngadi Marketplace';

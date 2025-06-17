@@ -9,39 +9,52 @@ import TestmonialCarousel from "@/components/Templates/Fashion/TestmonialCarouse
 import Footer from "@/components/Templates/Fashion/Footer";
 import { Button } from "@/components/ui/button";
 import { Edit, Eye } from "lucide-react";
+import { useEffect } from "react";
 
 const LiveWebsite = () => {
   const { websiteName } = useParams<{ websiteName: string }>();
-  const { currentWebsite, isEditMode, setIsEditMode } = useWebsite();
+  const { websites, currentWebsite, setCurrentWebsite, isEditMode, setIsEditMode } = useWebsite();
 
-  // If no website data or URL doesn't match, redirect to home
-  if (!currentWebsite || currentWebsite.url !== websiteName) {
+  useEffect(() => {
+    if (websiteName && !currentWebsite) {
+      // Find the website by URL and set it as current
+      const website = websites.find(site => site.url === websiteName);
+      if (website) {
+        setCurrentWebsite(website);
+      }
+    }
+  }, [websiteName, websites, currentWebsite, setCurrentWebsite]);
+
+  // If no website data found, redirect to home
+  if (websiteName && !websites.find(site => site.url === websiteName)) {
     return <Navigate to="/" replace />;
   }
 
   return (
     <div className="min-h-screen bg-gray-50 relative">
-      {/* Edit Mode Toggle */}
-      <div className="fixed top-4 right-4 z-50">
-        <Button
-          onClick={() => setIsEditMode(!isEditMode)}
-          variant={isEditMode ? "default" : "outline"}
-          size="sm"
-          className="shadow-lg"
-        >
-          {isEditMode ? (
-            <>
-              <Eye className="h-4 w-4 mr-2" />
-              Preview
-            </>
-          ) : (
-            <>
-              <Edit className="h-4 w-4 mr-2" />
-              Edit
-            </>
-          )}
-        </Button>
-      </div>
+      {/* Edit Mode Toggle - only show if website exists */}
+      {currentWebsite && (
+        <div className="fixed top-4 right-4 z-50">
+          <Button
+            onClick={() => setIsEditMode(!isEditMode)}
+            variant={isEditMode ? "default" : "outline"}
+            size="sm"
+            className="shadow-lg"
+          >
+            {isEditMode ? (
+              <>
+                <Eye className="h-4 w-4 mr-2" />
+                Preview
+              </>
+            ) : (
+              <>
+                <Edit className="h-4 w-4 mr-2" />
+                Edit
+              </>
+            )}
+          </Button>
+        </div>
+      )}
 
       <EditableHeader />
       <EditableHeroSection />

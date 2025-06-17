@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Eye, Truck, Package, MapPin, Mail, Phone, Calendar } from "lucide-react";
+import { Eye, Truck, Package, MapPin, Mail, Phone, Calendar, Store } from "lucide-react";
 import { useOrders } from "@/context/OrdersContext";
 import { useState } from "react";
 
@@ -22,11 +22,15 @@ export const OrdersView = () => {
   };
 
   const getContextIcon = (context: string) => {
-    return context === "marketplace" ? <Package className="w-4 h-4" /> : <MapPin className="w-4 h-4" />;
+    return context === "marketplace" ? <Package className="w-4 h-4" /> : <Store className="w-4 h-4" />;
   };
 
-  const getContextBadge = (context: string) => {
-    return context === "marketplace" ? "Marketplace" : "Store";
+  const getContextBadge = (context: string, storeId?: string) => {
+    if (context === "marketplace") {
+      return "PocketAngadi Marketplace";
+    } else {
+      return storeId === "template-preview" ? "Minimal Shop" : `Store: ${storeId}`;
+    }
   };
 
   const selectedOrderData = orders.find(order => order.id === selectedOrder);
@@ -35,7 +39,7 @@ export const OrdersView = () => {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold">Orders Management</h1>
-        <p className="text-muted-foreground">Manage and track customer orders from marketplace and store</p>
+        <p className="text-muted-foreground">Manage and track customer orders from marketplace and stores</p>
       </div>
 
       {selectedOrderData ? (
@@ -51,7 +55,7 @@ export const OrdersView = () => {
               </Badge>
               {getContextIcon(selectedOrderData.items[0]?.purchaseContext || "marketplace")}
               <Badge variant="outline">
-                {getContextBadge(selectedOrderData.items[0]?.purchaseContext || "marketplace")}
+                {getContextBadge(selectedOrderData.items[0]?.purchaseContext || "marketplace", selectedOrderData.items[0]?.storeId)}
               </Badge>
             </div>
           </div>
@@ -78,9 +82,19 @@ export const OrdersView = () => {
                   </p>
                 </div>
                 <div>
+                  <p className="text-sm text-muted-foreground">Store/Platform</p>
+                  <p className="font-medium">{getContextBadge(selectedOrderData.items[0]?.purchaseContext || "marketplace", selectedOrderData.items[0]?.storeId)}</p>
+                </div>
+                <div>
                   <p className="text-sm text-muted-foreground">Payment Method</p>
                   <p className="font-medium">{selectedOrderData.paymentMethod || "Credit Card"}</p>
                 </div>
+                {selectedOrderData.trackingNumber && (
+                  <div>
+                    <p className="text-sm text-muted-foreground">Tracking Number</p>
+                    <p className="font-medium">{selectedOrderData.trackingNumber}</p>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
@@ -94,16 +108,16 @@ export const OrdersView = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <p className="text-sm text-muted-foreground">Name</p>
+                  <p className="text-sm text-muted-foreground">Full Name</p>
                   <p className="font-medium">{selectedOrderData.customer.name}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Email</p>
+                  <p className="text-sm text-muted-foreground">Email Address</p>
                   <p className="font-medium">{selectedOrderData.customer.email}</p>
                 </div>
                 {selectedOrderData.customer.phone && (
                   <div>
-                    <p className="text-sm text-muted-foreground">Phone</p>
+                    <p className="text-sm text-muted-foreground">Phone Number</p>
                     <p className="font-medium flex items-center space-x-2">
                       <Phone className="w-4 h-4" />
                       <span>{selectedOrderData.customer.phone}</span>
@@ -112,13 +126,15 @@ export const OrdersView = () => {
                 )}
                 {selectedOrderData.customer.address && (
                   <div>
-                    <p className="text-sm text-muted-foreground">Address</p>
-                    <p className="font-medium">{selectedOrderData.customer.address}</p>
-                    {selectedOrderData.customer.city && (
-                      <p className="text-sm text-muted-foreground">
-                        {selectedOrderData.customer.city} {selectedOrderData.customer.zipCode}
-                      </p>
-                    )}
+                    <p className="text-sm text-muted-foreground">Shipping Address</p>
+                    <div className="font-medium">
+                      <p>{selectedOrderData.customer.address}</p>
+                      {selectedOrderData.customer.city && (
+                        <p className="text-sm text-muted-foreground">
+                          {selectedOrderData.customer.city} {selectedOrderData.customer.zipCode}
+                        </p>
+                      )}
+                    </div>
                   </div>
                 )}
               </CardContent>
@@ -130,6 +146,10 @@ export const OrdersView = () => {
                 <CardTitle>Order Summary</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
+                <div className="flex justify-between">
+                  <span>Items ({selectedOrderData.items.length})</span>
+                  <span>{selectedOrderData.items.reduce((sum, item) => sum + item.quantity, 0)} total</span>
+                </div>
                 <div className="flex justify-between">
                   <span>Subtotal</span>
                   <span>₹{selectedOrderData.subtotal.toFixed(2)}</span>
@@ -161,6 +181,7 @@ export const OrdersView = () => {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Product</TableHead>
+                    <TableHead>Source</TableHead>
                     <TableHead>Price</TableHead>
                     <TableHead>Quantity</TableHead>
                     <TableHead>Total</TableHead>
@@ -177,10 +198,13 @@ export const OrdersView = () => {
                         />
                         <div>
                           <p className="font-medium">{item.name}</p>
-                          <p className="text-sm text-muted-foreground">
-                            {getContextBadge(item.purchaseContext)}
-                          </p>
+                          <p className="text-sm text-muted-foreground">SKU: {item.id}</p>
                         </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="outline">
+                          {getContextBadge(item.purchaseContext, item.storeId)}
+                        </Badge>
                       </TableCell>
                       <TableCell>₹{item.price.toFixed(2)}</TableCell>
                       <TableCell>{item.quantity}</TableCell>
@@ -204,6 +228,7 @@ export const OrdersView = () => {
                 <div className="text-center py-8 text-muted-foreground">
                   <Package className="mx-auto h-12 w-12 mb-4 opacity-50" />
                   <p>No orders yet</p>
+                  <p className="text-sm">Orders from both marketplace and stores will appear here</p>
                 </div>
               ) : (
                 orders.map((order) => (
@@ -220,8 +245,8 @@ export const OrdersView = () => {
                         <p className="font-medium">{order.customer.name}</p>
                         <p className="text-sm text-muted-foreground">{order.customer.email}</p>
                       </div>
-                      <Badge variant="outline">
-                        {getContextBadge(order.items[0]?.purchaseContext || "marketplace")}
+                      <Badge variant="outline" className="text-xs">
+                        {getContextBadge(order.items[0]?.purchaseContext || "marketplace", order.items[0]?.storeId)}
                       </Badge>
                     </div>
                     
