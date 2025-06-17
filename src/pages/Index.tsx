@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,12 +7,13 @@ import { Link } from "react-router-dom";
 
 const Index = () => {
   const [selectedPlan, setSelectedPlan] = useState("pro");
+  const [billingCycle, setBillingCycle] = useState("monthly");
 
-  const plans = [
+  const monthlyPlans = [
     {
       id: "starter",
-      name: "Starter",
-      price: "₹2,299",
+      name: "Basic",
+      price: "₹1,199",
       period: "/month",
       description: "Perfect for new sellers",
       features: ["Up to 100 products", "Basic analytics", "Standard templates", "Email support"],
@@ -22,7 +22,7 @@ const Index = () => {
     {
       id: "pro",
       name: "Pro",
-      price: "₹6,299",
+      price: "₹1,999",
       period: "/month",
       description: "For growing businesses",
       features: ["Unlimited products", "Advanced analytics", "Premium templates", "Priority support", "Custom domain"],
@@ -31,13 +31,43 @@ const Index = () => {
     {
       id: "enterprise",
       name: "Enterprise",
-      price: "₹15,999",
-      period: "/month",
-      description: "For large scale operations",
+      description: "Contact Team",
       features: ["Everything in Pro", "White-label solution", "API access", "Dedicated support", "Custom integrations"],
       popular: false
     }
   ];
+
+  const yearlyPlans = [
+    {
+      id: "starter",
+      name: "Basic",
+      price: "₹1,499",
+      yearlyPrice: "₹17,988",
+      period: "/year",
+      description: "Perfect for new sellers",
+      features: ["Up to 100 products", "Basic analytics", "Standard templates", "Email support"],
+      popular: false
+    },
+    {
+      id: "pro",
+      name: "Pro",
+      price: "₹1,499",
+      yearlyPrice: "₹17,988",
+      period: "/year",
+      description: "For growing businesses",
+      features: ["Unlimited products", "Advanced analytics", "Premium templates", "Priority support", "Custom domain"],
+      popular: true
+    },
+    {
+      id: "enterprise",
+      name: "Enterprise",
+      description: "Contact Team",
+      features: ["Everything in Pro", "White-label solution", "API access", "Dedicated support", "Custom integrations"],
+      popular: false
+    }
+  ];
+
+  const activePlans = billingCycle === "monthly" ? monthlyPlans : yearlyPlans;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted">
@@ -158,11 +188,30 @@ const Index = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Choose Your Plan</h2>
-            <p className="text-muted-foreground">Start free, upgrade as you grow</p>
+            <p className="text-muted-foreground mb-8">Start free, upgrade as you grow</p>
+            
+            {/* Billing Toggle */}
+            <div className="flex justify-center items-center gap-4 mb-8">
+              <span className={`${billingCycle === 'monthly' ? 'text-primary' : 'text-muted-foreground'}`}>Monthly</span>
+              <Button
+                variant="outline"
+                onClick={() => setBillingCycle(billingCycle === "monthly" ? "yearly" : "monthly")}
+                className="relative w-16 h-8 rounded-full"
+              >
+                <div
+                  className={`absolute w-6 h-6 bg-primary rounded-full transition-transform ${
+                    billingCycle === "yearly" ? "translate-x-8" : "translate-x-0"
+                  }`}
+                />
+              </Button>
+              <span className={`${billingCycle === 'yearly' ? 'text-primary' : 'text-muted-foreground'}`}>
+                Yearly <span className="text-sm text-green-500">(Save 25%)</span>
+              </span>
+            </div>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {plans.map((plan) => (
+            {activePlans.map((plan) => (
               <Card 
                 key={plan.id} 
                 className={`relative cursor-pointer transition-all duration-300 hover:shadow-xl ${
@@ -179,8 +228,20 @@ const Index = () => {
                   <CardTitle className="text-2xl">{plan.name}</CardTitle>
                   <CardDescription>{plan.description}</CardDescription>
                   <div className="text-4xl font-bold">
-                    {plan.price}
-                    <span className="text-lg text-muted-foreground">{plan.period}</span>
+                    {billingCycle === "yearly" && plan.yearlyPrice ? (
+                      <>
+                        {plan.yearlyPrice}
+                        <span className="text-lg text-muted-foreground">{plan.period}</span>
+                        <div className="text-sm text-muted-foreground">
+                          ({plan.price}/month)
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        {plan.price}
+                        <span className="text-lg text-muted-foreground">{plan.period}</span>
+                      </>
+                    )}
                   </div>
                 </CardHeader>
                 <CardContent>
