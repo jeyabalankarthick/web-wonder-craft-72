@@ -50,10 +50,14 @@ export const CartDropdown = ({ onClose }: CartDropdownProps) => {
     onClose?.();
   };
 
-  const getCartTitle = () =>
-    purchaseContext === 'marketplace'
-      ? 'PocketAngadi Cart'
-      : `${storeName} Cart`;
+  const getCartTitle = () => {
+    if (purchaseContext === 'marketplace') {
+      return 'PocketAngadi Cart';
+    } else {
+      // For store context, use "Fashion Cart" for fashion websites
+      return 'Fashion Cart';
+    }
+  };
 
   // Dynamic cart and checkout links based on context
   const cartLink = purchaseContext === 'marketplace' ? '/cart' : '/storecart';

@@ -1,4 +1,3 @@
-
 import { useLocation } from "react-router-dom";
 import { useWebsite } from "@/context/WebsiteContext";
 
@@ -22,8 +21,13 @@ export const usePurchaseContext = () => {
       return 'store';
     }
 
-    // For product detail pages accessed from marketplace, default to marketplace
-    if (location.pathname.startsWith('/product/')) {
+    // For product detail pages, check if we have a current website context
+    if (location.pathname.startsWith('/product/') || location.pathname.startsWith('/productDetails/')) {
+      // If we have a current website, it's a store purchase
+      if (currentWebsite) {
+        return 'store';
+      }
+      // Otherwise, it's a marketplace purchase
       return 'marketplace';
     }
 
